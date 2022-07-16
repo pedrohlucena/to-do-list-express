@@ -9,9 +9,9 @@ const Task = require('../models/task')
 checklistDependentRoute.get('/:id/tasks/new', async (req, res) => {
     try {
         let task = Task()
-        res.status(200).render('tasks/new', { checklistId: req.params.id, task: task})
+        res.status(200).render('tasks/new', { checklistId: req.params.id, task: task })
     } catch (error) {
-        res.status(422).render('pages/error', {error: 'Erro ao carregar o formulário'})
+        res.status(422).render('pages/error', { error: 'Erro ao carregar o formulário' })
     }
 })
 
@@ -24,13 +24,13 @@ simpleRouter.delete('/:id', async (req, res) => {
         checklist.save()
         res.redirect(`/checklists/${checklist._id}`)
     } catch (error) {
-        res.status(422).render('pages/error', {error: 'Erro ao remover uma tarefa'})
+        res.status(422).render('pages/error', { error: 'Erro ao remover uma tarefa' })
     }
 })
 
 checklistDependentRoute.post('/:id/tasks', async (req, res) => {
     let { name } = req.body.task
-    let task = new Task({name, checklist: req.params.id})
+    let task = new Task({ name, checklist: req.params.id })
 
     try {
         await task.save()
@@ -40,7 +40,7 @@ checklistDependentRoute.post('/:id/tasks', async (req, res) => {
         res.redirect(`/checklists/${req.params.id}`)
     } catch (error) {
         let errors = error.errors
-        res.status(422).render('tasks/new', {task: {...task, errors}, checklistId: req.params.id})
+        res.status(422).render('tasks/new', { task: { ...task, errors }, checklistId: req.params.id })
     }
 })
 
@@ -52,11 +52,11 @@ simpleRouter.put('/:id', async (req, res) => {
         res.status(200).json({ task })
     } catch (error) {
         let errors = error.errors
-        res.status(422).json({ task: {...errors}})
+        res.status(422).json({ task: { ...errors } })
     }
 })
 
-module.exports = { 
+module.exports = {
     checklistDependent: checklistDependentRoute,
     simple: simpleRouter
 }
